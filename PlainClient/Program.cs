@@ -1,4 +1,5 @@
 ﻿using System;
+using ModelLib;
 
 namespace PlainClient
 {
@@ -6,7 +7,10 @@ namespace PlainClient
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Client plainClient = new Client();
+            plainClient.Start();
+
+            Console.ReadLine();
         }
     }
 }

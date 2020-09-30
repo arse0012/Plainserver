@@ -18,8 +18,13 @@ namespace PlainClient
             StreamReader sr = new StreamReader(ns);
             StreamWriter sw = new StreamWriter(ns);
 
+            sw.WriteLine(car);
+            sw.Flush();
 
+            string line = sr.ReadLine();
+            Console.WriteLine($"Clients car:{line}");
 
+            socket.Close();
         }
     }
 }
