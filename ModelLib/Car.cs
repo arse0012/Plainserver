@@ -22,5 +22,10 @@ namespace ModelLib
             RegNumber = regNumber;
 
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Model)}: {Model}, {nameof(Type)}: {Type}, {nameof(RegNumber)}: {RegNumber}";
+        }
     }
 }
