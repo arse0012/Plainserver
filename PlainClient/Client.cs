@@ -11,20 +11,16 @@ namespace PlainClient
     {
         public void Start()
         {
-            Car car = new Car("Tesla","Red","El23400");
             TcpClient socket = new TcpClient("Localhost", 10001);
+            using (StreamWriter sw = new StreamWriter(socket.GetStream()))
+            {
+                sw.AutoFlush = true;
 
-            NetworkStream ns = socket.GetStream();
-            StreamReader sr = new StreamReader(ns);
-            StreamWriter sw = new StreamWriter(ns);
+                Car car = new Car("Tesla", "Red", "El23400");
 
-            sw.WriteLine(car);
-            sw.Flush();
-
-            string line = sr.ReadLine();
-            Console.WriteLine($"Clients car:{line}");
-
-            socket.Close();
+                sw.WriteLine(car.ToString());
+            }
+            socket?.Close();
         }
     }
 }

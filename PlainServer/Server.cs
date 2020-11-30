@@ -5,34 +5,47 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PlainServer
 {
     public class Server
     {
+        public Server()
+        {
+            
+        }
         public void Start()
         {
             TcpListener carServer = new TcpListener(IPAddress.Loopback, 10001);
             carServer.Start();
 
-            TcpClient socket = carServer.AcceptTcpClient();
+            while (true)
+            {
+                TcpClient socket = carServer.AcceptTcpClient();
+                Task.Run(
+                    () =>
+                    {
+                        TcpClient tmpSocket = socket;
+                        DoClient(tmpSocket);
+                    }
+                    );
+            }
 
-            DoClient(socket);
-            socket.Close();
         }
 
         private static void DoClient(TcpClient socket)
         {
-            NetworkStream ns = socket.GetStream();
-            StreamReader sr = new StreamReader(ns);
-            StreamWriter sw = new StreamWriter(ns);
+            using (StreamReader sr = new StreamReader(socket.GetStream()))
+            using (StreamWriter sw = new StreamWriter(socket.GetStream()))
+            {
+                sw.AutoFlush = true;
 
-            string line = sr.ReadLine();
-            Console.WriteLine(line);
+                string carString = sr.ReadLine();
 
-            sw.WriteLine(line);
-            sw.Flush();
-
+                Console.WriteLine("Received car string : " + carString);
+            }
+            socket?.Close();
         }
     }
 }

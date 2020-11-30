@@ -6,7 +6,10 @@ namespace PlainServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Server worker = new Server();
+            worker.Start();
+
+            Console.ReadLine();
         }
     }
 }
